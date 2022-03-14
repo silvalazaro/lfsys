@@ -9,17 +9,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Represents a Company
+ * @author silvalazaro <lazarofdsilva@gmail.com>
  * 
+ * @property int id
  * @property mixed activity
- * @property mixed cnpj
- * @property mixed corporate_name
- * @property mixed cpf
- * @property mixed created_at
- * @property mixed deleted_at
- * @property mixed fantasy_name
- * @property mixed id
- * @property mixed site
- * @property mixed updated_a
+ * @property string cnpj
+ * @property string corporate_name
+ * @property string cpf
+ * @property \Carbon\Carbon created_at
+ * @property \Carbon\Carbon deleted_at
+ * @property \Carbon\Carbon updated_a
+ * @property string fantasy_name
+ * @property string site
+ * 
  */
 class Company extends Model
 {
