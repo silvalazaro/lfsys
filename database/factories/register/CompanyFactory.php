@@ -22,9 +22,9 @@ class CompanyFactory extends Factory
     {
         return [
             'activity' => $this->faker->company(),
-            'cnpj' => $this->faker->md5(),
+            'cnpj' => $this->faker->text(14),
             'corporate_name' => $this->faker->company(),
-            'cpf' => $this->faker->md5(),
+            'cpf' => $this->faker->text(11),
             'fantasy_name' => $this->faker->name(),
         ];
     }
