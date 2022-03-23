@@ -2,8 +2,12 @@
 
 namespace App\Repositories\Register;
 
-use App\Models\register\Company;
+use App\Models\Register\Company;
 
+/**
+ * Handle records
+ * 
+ */
 class CompanyRepository
 {
 
@@ -16,7 +20,7 @@ class CompanyRepository
     }
 
     /**
-     * Create register
+     * Insert a register
      * 
      * @param array $data
      * @return Company
@@ -24,6 +28,20 @@ class CompanyRepository
     public function create($data)
     {
         return Company::create($data);
+    }
+
+     /**
+     * Update a register
+     * 
+     * @param array $data
+     * @return Company
+     */
+    public function update($data)
+    {
+        $company = Company::find($data['id']);
+        $company->fill($data);
+        $company->save();
+        return $company;
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\register;
+namespace App\Models\Register;
 
 use App\Models\stock\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,11 +28,26 @@ class Company extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'activity',
+        'cnpj',
+        'corporate_name',
+        'cpf',
+        'fantasy_name',
+        'id',
+        'site',
+        'updated_at',
+    ];
+
+    /**
      * Get the company's products.
      */
-    public function products():HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
-
 }

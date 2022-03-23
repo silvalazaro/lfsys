@@ -1,15 +1,14 @@
 <?php
 
-namespace Tests\Feature\register\company;
+namespace Tests\Feature\Register\company;
 
-use App\Models\register\Company;
+use App\Models\Register\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 
-class CreateCompanyTest extends TestCase
+class CompanyDatabaseTest extends TestCase
 {
     use RefreshDatabase;
     /**
