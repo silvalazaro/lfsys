@@ -11,6 +11,7 @@ use function PHPUnit\Framework\assertEquals;
 class CompanyDatabaseTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -20,5 +21,18 @@ class CompanyDatabaseTest extends TestCase
     {
         $companies = Company::factory()->count(3)->create();
         assertEquals(3, count($companies));
+    }
+
+      /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    public function test_update_a_company()
+    {
+        $company = Company::limit(1)->first();
+        $company->id = 1;
+        $company->save();
+        assertEquals(1, $company->id);
     }
 }
