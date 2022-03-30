@@ -21,4 +21,13 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    public function createDefault($company_id)
+    {
+        return $this->create([
+            'name' => 'Administrador',
+            'description' => 'Acesso liberado para todos os módulos',
+            'company_id', $company_id
+        ]);
+    }
 }

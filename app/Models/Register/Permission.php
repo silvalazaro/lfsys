@@ -19,4 +19,13 @@ class Permission extends Model
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function createDefault($company_id)
+    {
+        $this->create([
+            'name' => 'user:create',
+            'description' => 'user',
+            'company_id' => $company_id
+        ]);
+    }
 }

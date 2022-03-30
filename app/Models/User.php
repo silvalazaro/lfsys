@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Register\Company;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,10 +10,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
- * @property company_id Id da companhia
+ * @property company_id
  */
 class User extends Authenticatable
 {
@@ -21,7 +21,6 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -64,4 +63,19 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    /**
+     * The companies that belong to the user.
+     */
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
+    /**
+     * The companies that belong to the user as owner
+     */
+    public function companiesOwner()
+    {
+        return $this->belongsToMany(Company::class, 'company_user_owner');
+    }
 }

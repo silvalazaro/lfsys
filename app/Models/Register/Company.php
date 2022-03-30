@@ -3,14 +3,16 @@
 namespace App\Models\Register;
 
 use App\Models\stock\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Represents a Company
  * @author silvalazaro <lazarofdsilva@gmail.com>
- * 
+ *
  * @property int id
  * @property mixed activity
  * @property string cnpj
@@ -21,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Carbon\Carbon updated_a
  * @property string fantasy_name
  * @property string site
- * 
+ *
  */
 class Company extends Model
 {
@@ -49,5 +51,13 @@ class Company extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    /**
+     * The users belong to the company
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

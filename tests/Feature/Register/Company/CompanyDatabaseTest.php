@@ -13,7 +13,7 @@ class CompanyDatabaseTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * A basic feature test example.testProductSoftDelete
      *
      * @return void
      */
@@ -23,16 +23,16 @@ class CompanyDatabaseTest extends TestCase
         assertEquals(3, count($companies));
     }
 
-      /**
-     * A basic feature test example.
-     *
-     * @return void
+    /**
+     * @depends test_should_create_companys
      */
     public function test_update_a_company()
     {
-        $company = Company::limit(1)->first();
-        $company->id = 1;
+        $this->seed();
+        $company = Company::first();
+        $company->corporate_name = 'Corporate Test';
         $company->save();
-        assertEquals(1, $company->id);
+        $company->fresh();
+        assertEquals('Corporate Test', $company->corporate_name);
     }
 }
