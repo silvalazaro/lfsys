@@ -10,6 +10,6 @@ class CompanyController extends SysController
 
    public function __construct(Repository $rp)
    {
-       $this->rp
+       $this->rp;
    }
 }

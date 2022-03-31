@@ -46,6 +46,18 @@ class Company extends Model
     ];
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($company) {
+            Role::factory()->default($company->id);
+        });
+    }
+
+    /**
      * Get the company's products.
      */
     public function products(): HasMany
@@ -59,5 +71,13 @@ class Company extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Get the company's roles.
+     */
+    public function roles(): HasMany
+    {
+        return $this->hasMany(Role::class);
     }
 }

@@ -4,8 +4,6 @@ namespace Tests\Feature\Register\User;
 
 use App\Models\Register\Company;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;

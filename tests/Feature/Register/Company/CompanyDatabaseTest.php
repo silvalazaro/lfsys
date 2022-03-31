@@ -7,6 +7,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertIsInt;
+use function PHPUnit\Framework\assertTrue;
 
 class CompanyDatabaseTest extends TestCase
 {
@@ -35,4 +38,11 @@ class CompanyDatabaseTest extends TestCase
         $company->fresh();
         assertEquals('Corporate Test', $company->corporate_name);
     }
+
+    public function test_auto_create_role_for_the_company()
+    {
+        $company = Company::factory()->create();
+        assertFalse(empty($company->roles()->count()));
+    }
+
 }

@@ -13,7 +13,7 @@ class CompanyControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function test_user_should_create_()
     {
         $response = $this->get('/');
 

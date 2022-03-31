@@ -17,17 +17,16 @@ class Role extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'company_id',
+        'updated_at'
+    ];
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
     }
 
-    public function createDefault($company_id)
-    {
-        return $this->create([
-            'name' => 'Administrador',
-            'description' => 'Acesso liberado para todos os módulos',
-            'company_id', $company_id
-        ]);
-    }
 }
