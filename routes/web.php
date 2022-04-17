@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Register\CityController;
+use App\Http\Controllers\Register\UfController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,6 +26,14 @@ Route::get('/', function () {
         ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::prefix('register')->group(function () {
+        Route::get('ufs', [UfController::class, 'optionsForSelect'])->name('ufs.select');
+        Route::get('cities', [CityController::class, 'optionsForSelect'])->name('cities.select');
+    });
+
+    Route::get('/dashboard',function()
+    {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+});

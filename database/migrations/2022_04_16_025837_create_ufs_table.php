@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Register\Permission;
-use App\Models\Register\Role;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('permission_role', function (Blueprint $table) {
-            $table->foreignIdFor(Permission::class);
-            $table->foreignIdFor(Role::class);
+        Schema::create('ufs', function (Blueprint $table) {
+            $table->id();
+            $table->integer('code')->unsigned();
+            $table->string('initials',2);
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
+        Schema::dropIfExists('ufs');
     }
 };

@@ -16,11 +16,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('permission_role', function (Blueprint $table) {
-            $table->foreignIdFor(Permission::class);
+
+        Schema::create('role_user', function (Blueprint $table) {
             $table->foreignIdFor(Role::class);
+            $table->foreignIdFor(User::class);
             $table->timestamps();
         });
+
     }
 
     /**
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
+        Schema::dropIfExists('role_user');
     }
 };
