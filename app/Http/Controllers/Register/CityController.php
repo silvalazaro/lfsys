@@ -6,9 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
 use App\Models\Register\City;
+use App\Models\User;
+use App\Repositories\Repository;
+use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
+    /**
+     * @var \App\Repositories\Repository
+     */
+    protected $repo;
+
+    public function __construct(City $city)
+    {
+        $this->repo = new Repository(new User(), $city);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -74,13 +87,13 @@ class CityController extends Controller
         //
     }
 
-    /**
+     /**
      * Return options for select
      *
      * @return \Illuminate\Http\Response
      */
-    public function optionsForSelect()
+    public function optionsForSelect(Request $request)
     {
-        return City::orderBy('name')->get()->map(fn ($e) => ['value' => $e->id, 'label' => $e->name]);
+        return $this->repo->optionsForSelect($request->all());
     }
 }

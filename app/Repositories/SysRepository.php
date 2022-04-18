@@ -4,13 +4,13 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class Repository
+class SysRepository
 {
 
     protected User $user;
 
     /**
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var \App\Models\ModelSys
      */
     protected $model;
 
@@ -23,6 +23,7 @@ class Repository
     {
         $this->user = $user;
         $this->model = $model;
+        $this->query = $model->company($this->user->company_id);
     }
 
     /**
@@ -32,19 +33,14 @@ class Repository
      */
     public function optionsForSelect(array $params)
     {
-        $label = $this->model->getLabel();
-        $query = $this->model->query();
-
-        if(isset($params['label'])){
-            $query->where($label, 'like', '%'.$params['label'] . '%');
-            unset($params['label']);
-        }
+        $label = $this->model->label;
+        return $label;
 
         foreach($params as $key => $value){
-            $query->where($key, $value);
+            $this->query->where($key, $value);
         }
 
-        return $query->select($label . ' as label', 'id')->limit(3)->get();
+        return $this->query::select($label . ' as label', 'id as value')->get();
     }
 
 }

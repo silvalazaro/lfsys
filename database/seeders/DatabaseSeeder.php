@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Register\City;
+use Database\Seeders\Register\CitySeeder;
 use Database\Seeders\Register\CompanySeeder;
 use Database\Seeders\Register\UfSeeder;
 use Database\Seeders\Register\UserSeeder;
@@ -19,9 +21,10 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            //CompanySeeder::class,
-            //UfSeeder::class,
-            UserSeeder::class
+            // CompanySeeder::class,
+            // UfSeeder::class,
+            // UserSeeder::class,
+            CitySeeder::class
         ]);
     }
 }

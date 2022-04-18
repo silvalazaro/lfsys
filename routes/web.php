@@ -19,21 +19,35 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-        ]);
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('register')->group(function () {
-        Route::get('ufs', [UfController::class, 'optionsForSelect'])->name('ufs.select');
-        Route::get('cities', [CityController::class, 'optionsForSelect'])->name('cities.select');
+
+        Route::name('ufs.')->group(function () {
+            Route::prefix('ufs')->group(function () {
+                Route::controller(UfController::class)->group(function () {
+                    Route::get('optionsForSelect', 'optionsForSelect')->name('select');
+                });
+            });
+        });
+
+        Route::name('cities.')->group(function () {
+            Route::prefix('cities')->group(function () {
+                Route::controller(CityController::class)->group(function () {
+                    Route::get('optionsForSelect', 'optionsForSelect')->name('select');
+                });
+            });
+        });
+
     });
 
-    Route::get('/dashboard',function()
-    {
+    Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });

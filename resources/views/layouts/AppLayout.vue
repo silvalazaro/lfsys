@@ -413,9 +413,11 @@
       </header>
 
       <!-- Page Content -->
-      <main>
-        <slot></slot>
-      </main>
+      <el-config-provider :locale="locale">
+        <main>
+          <slot></slot>
+        </main>
+      </el-config-provider>
     </div>
   </div>
 </template>
@@ -429,7 +431,8 @@ import JetDropdownLink from "@/Jetstream/DropdownLink.vue";
 import JetNavLink from "@/Jetstream/NavLink.vue";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
-import Home from '@/views/pages/Home.vue'
+import Home from "@/views/pages/Home.vue";
+import ptBr from "element-plus/lib/locale/lang/pt-br";
 
 export default defineComponent({
   props: {
@@ -445,16 +448,20 @@ export default defineComponent({
     JetNavLink,
     JetResponsiveNavLink,
     Link,
-    Home
+    Home,
   },
 
   data() {
     return {
       showingNavigationDropdown: false,
-      page: 'home'
+      page: "home",
     };
   },
-
+  setup() {
+    return {
+      locale: ptBr
+    };
+  },
   methods: {
     switchToTeam(team) {
       this.$inertia.put(

@@ -32,19 +32,13 @@ class Repository
      */
     public function optionsForSelect(array $params)
     {
-        $label = $this->model->getLabel();
-        $query = $this->model->query();
-
-        if(isset($params['label'])){
-            $query->where($label, 'like', '%'.$params['label'] . '%');
-            unset($params['label']);
-        }
+        $label = $this->model->label;
 
         foreach($params as $key => $value){
-            $query->where($key, $value);
+            $this->query->where($key, $value);
         }
 
-        return $query->select($label . ' as label', 'id')->limit(3)->get();
+        return $this->query::select($label . ' as label', 'id')->get();
     }
 
 }

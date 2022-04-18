@@ -94,6 +94,6 @@ class UfController extends Controller
      */
     public function optionsForSelect()
     {
-        return Uf::orderBy('initials')->get()->map(fn($e) => ['value' => $e->id, 'label' => $e->initials]);
+        return Uf::orderBy('initials')->select('id', 'initials as label')->get();
     }
 }

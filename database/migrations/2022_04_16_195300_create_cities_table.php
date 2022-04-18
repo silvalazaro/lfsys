@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('igge')->nullable();
+            $table->integer('ibge')->nullable();
             $table->foreignId('uf_id')->constrained();
-            $table->timestamps();
+            $table->unique(['name', 'uf_id']);
         });
     }
 

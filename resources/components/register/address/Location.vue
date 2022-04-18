@@ -8,6 +8,7 @@
           v-model="location.uf"
           @change="reloadCity"
           :rules="rulesUf"
+          :key="1"
         />
         <sys-select
           label="Cidade"
@@ -15,6 +16,7 @@
           v-model="location.city"
           ref="city"
           :rules="rulesCity"
+            :key="2"
         />
         <el-form-item label="País">
           <el-input prop="pais" />
@@ -30,8 +32,10 @@ import { ref } from "@vue/reactivity";
 const city = ref();
 
 function reloadCity() {
+  location.city = ''
+  city.value.params.uf_id = location.uf
   city.value.search({
-    uf: location.uf
-  });
+    uf_id: location.uf,
+  })
 }
 </script>
