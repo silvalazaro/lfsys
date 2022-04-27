@@ -1,24 +1,30 @@
 <template>
-  <el-row>
-    <el-col :span="12">
-      <input-cep />
-      <el-form label-width="120px" :model="address" :rules="rules" ref="form">
-        <el-form-item label="Logradouro" prop="place">
-          <el-input v-model="address.place" />
-        </el-form-item>
-        <el-form-item label="Número">
-          <el-input v-model="address.number" prop="number" />
-        </el-form-item>
-      </el-form>
-    </el-col>
-    <el-col :span="12">
-        <location />
-    </el-col>
-  </el-row>
+  <div>
+    <el-row :gutter="20">
+      <el-col>
+        <div class="flex">
+          <input-cep class="w-2/6" />
+          <sys-input v-model="location.street" label="Logradouro" class="w-4/6 ml-2" />
+          <sys-input v-model="address.number" label="Número" class="w-2/6 ml-2" />
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col>
+        <div class="flex">
+            <sys-select v-model="location.uf" label="Estado" :url="route('ufs.select')" class="w-1/6" />
+            <sys-select v-model="location.city" label="Cidade" :url="route('cities.select')"  class="w-2/6 ml-2" />
+            <sys-select v-model="location.district" label="Bairro" :url="route('districts.select')" class="w-2/6 ml-2" />
+            <sys-select v-model="location.country" label="País" :url="route('countries.select')" class="w-1/6 ml-2" />
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
+import { location } from "@/store/register/address/location";
 import { Address, createRules } from "@/models/register/Address";
 
 const address = reactive(new Address());
@@ -27,11 +33,4 @@ const form = ref(null);
 const rules = createRules();
 
 const options = [];
-
-const changeCep = _.debounce(function () {
-  // axios.get('https://viacep.com.br/ws/01001000/json/')
-  // .then((res) => {
-  //     console.log(res.data)
-  // })
-}, 1000);
 </script>

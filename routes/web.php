@@ -45,6 +45,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             });
         });
 
+        Route::name('districts.')->group(function () {
+            Route::prefix('districts')->group(function () {
+                Route::controller(CityController::class)->group(function () {
+                    Route::get('optionsForSelect', 'optionsForSelect')->name('select');
+                });
+            });
+        });
+
+        Route::name('countries.')->group(function () {
+            Route::prefix('countries')->group(function () {
+                Route::controller(CityController::class)->group(function () {
+                    Route::get('optionsForSelect', 'optionsForSelect')->name('select');
+                });
+            });
+        });
+
     });
 
     Route::get('/dashboard', function () {

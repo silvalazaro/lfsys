@@ -1,5 +1,6 @@
 <template>
-  <el-form-item :label="label">
+  <label class="block w-full">
+    <span class="block text-sm font-medium text-slate-700">{{ label }}</span>
     <el-select
       v-model="value"
       filterable
@@ -9,6 +10,7 @@
       :loading="loading"
       :remote-method="remoteMethod"
       remote
+      class="w-full"
     >
       <el-option
         v-for="item in data.options"
@@ -16,7 +18,10 @@
         :value="item.label"
       />
     </el-select>
-  </el-form-item>
+    <p class="mt-2 text-rose-500 text-sm">
+      {{ message }}
+    </p>
+  </label>
 </template>
 
 <script lang="ts" setup>
@@ -31,7 +36,7 @@ const props = defineProps<{
 
 const emit = defineEmits(["update:modelValue", "change"]);
 const loading = ref(false);
-
+const message = ref("");
 const value = computed({
   get() {
     const val: any = _.find(
@@ -55,12 +60,13 @@ const data = reactive({
 const params: any = {};
 
 const search = _.debounce((paramss?: any) => {
-  axios.get(props.url, {
+  axios
+    .get(props.url, {
       params: paramss || params,
-  })
-  .then((res) => {
+    })
+    .then((res) => {
       data.options = res.data;
-  });
+    });
 }, 500);
 
 defineExpose({
@@ -73,7 +79,7 @@ onMounted(() => {
 });
 
 const remoteMethod = (query: string) => {
-    console.log(params)
+  console.log(params);
   if (query) {
     params.label = query;
     search();

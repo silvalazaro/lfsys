@@ -11,15 +11,19 @@ interface viacep {
 interface Local{
     cep: string,
     city: string | number,
-    uf: string | number
+    uf: string | number,
+    street: string,
+    district: string,
+    country: string
 }
 
 const location:Local = reactive({
     cep: "01001-000",
-    logradouro: "",
+    street: "",
     complemento: "",
-    bairro: "",
+    district: "",
     city: "",
+    country: "",
     uf: "",
     ibge: "",
     gia: "",
@@ -33,4 +37,6 @@ export function setLocation(viacep: viacep) {
     location.cep = viacep.cep
     location.city = viacep.localidade
     location.uf = viacep.uf
+    location.street = viacep.logradouro
+    location.district = viacep.bairro
 }

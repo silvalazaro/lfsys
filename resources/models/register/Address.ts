@@ -11,6 +11,12 @@ export class Address extends Model {
     latitude: number;
     neighborhood_id: number;
     city_id: number;
+
+    constructor() {
+        super()
+        this.number = "";
+    }
+
 }
 
 export function createRules() {

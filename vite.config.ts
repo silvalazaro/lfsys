@@ -32,7 +32,7 @@ export default defineConfig({
         laravel({
             postcss: [
                 tailwindcss(),
-                autoprefixer(),
+               autoprefixer()
             ],
         }),
     ],

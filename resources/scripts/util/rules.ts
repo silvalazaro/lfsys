@@ -11,7 +11,9 @@ export function ruleCep(name?: string) {
         validator(rule: any, value: any, callback: any) {
             if (value && maskCep(value).length === 9) {
                 callback()
-            } else {
+            } else if(!value){
+                callback()
+            }else{
                 callback(new Error('CEP inválido'))
             }
         }

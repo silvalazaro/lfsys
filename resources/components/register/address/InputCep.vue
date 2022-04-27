@@ -1,41 +1,76 @@
 <template>
-  <el-form :model="model" :rules="rules" ref="form">
-    <el-form-item label="CEP" prop="cep">
+  <div>
+    <label class="block">
+      <span class="block text-sm font-medium text-slate-700">CEP</span>
       <el-input
-        v-model="model.cep"
+        v-model="value"
         v-maska="'#####-###'"
         @input="changeCep"
         ref="input"
       />
-    </el-form-item>
-  </el-form>
+      <p class="mt-2 text-rose-500 text-sm">
+        {{ message }}
+      </p>
+    </label>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ruleCep, ruleRequired } from "@/scripts/util/rules";
-import { reactive, ref } from "@vue/reactivity";
-import axios from "axios";
+import Schema from "async-validator";
+import { computed, handleError, ref } from "@vue/runtime-core";
 import { setLocation } from "@/store/register/address/location";
+import axios from "axios";
 
-const model = reactive({
-  cep: null,
-});
+const props = defineProps<{
+  required?: boolean;
+  modelValue?: string;
+}>();
+
+const emit = defineEmits(["update:modelValue", "change"]);
+
 const input = ref();
-const form = ref();
-const rules = {
-  cep: [ruleRequired("CEP"), ruleCep()],
-};
+
+const message = ref("");
+
+const tempValue = ref("");
+
+const value = computed({
+  get() {
+    return tempValue.value || props.modelValue;
+  },
+  set: (value: string) => {
+    tempValue.value = value;
+  },
+});
+
+let validator: any = null;
+if (props.required) {
+  validator = new Schema({
+    cep: [ruleRequired("CEP"), ruleCep()],
+  });
+} else {
+  validator = new Schema({
+    cep: [ruleCep()],
+  });
+}
 
 const changeCep = _.debounce(function (value) {
-  form.value.validate((e: boolean) => {
-    if (e) {
-      const cep = input.value.input.dataset.maskRawValue;
-      axios.get(`https://viacep.com.br/ws/${cep}/json/`).then((res) => {
+  validator.validate({ cep: value }, (errors: any, fields: any) => {
+    if (errors) {
+      message.value = errors[0].message;
+      return handleError(errors, fields, validator);
+    }
+    const cep = input.value.input.dataset.maskRawValue;
+    emit("update:modelValue", cep);
+    message.value = "";
+    if (value) {
+      axios.get(`https://viacep.com.br/ws/${cep}/json/`).then((res: any) => {
         if (res.data.cep) {
-          setLocation(res.data)
+          setLocation(res.data);
         }
       });
     }
   });
-}, 800);
+}, 300);
 </script>

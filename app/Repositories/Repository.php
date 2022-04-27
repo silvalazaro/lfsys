@@ -44,7 +44,7 @@ class Repository
             $query->where($key, $value);
         }
 
-        return $query->select($label . ' as label', 'id')->limit(3)->get();
+        return $query->select($label . ' as label', 'id')->get();
     }
 
 }
