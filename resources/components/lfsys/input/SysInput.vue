@@ -1,8 +1,20 @@
 <template>
   <div>
     <label class="block">
-      <span class="block text-sm font-medium text-slate-700">{{ label }}</span>
-      <el-input v-model="value" @input="changeInput" ref="input" />
+      <span class="block text-sm font-medium text-slate-700">
+        <el-tooltip
+          :content="tooltip"
+          placement="top-start"
+        >
+         {{ label }}
+        </el-tooltip>
+      </span>
+      <el-input
+        v-model="value"
+        @input="changeInput"
+        ref="input"
+        :disabled="disabled"
+      />
       <p class="mt-2 text-rose-500 text-sm">
         {{ message }}
       </p>
@@ -11,18 +23,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ruleCep, ruleRequired } from "@/scripts/util/rules";
 import Schema from "async-validator";
 import { computed, handleError, ref } from "@vue/runtime-core";
-import { setLocation } from "@/store/register/address/location";
-import axios from "axios";
 
-const props = defineProps<{
+interface Props {
   required?: boolean;
   modelValue: string;
   label?: string;
   validators?: Array<any>;
-}>();
+  disabled?: boolean;
+  tooltip?:string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    tooltip: 'Nenhuma observação'
+})
 
 const emit = defineEmits(["update:modelValue", "change"]);
 

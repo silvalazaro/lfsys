@@ -23,7 +23,7 @@ const location:Local = reactive({
     complemento: "",
     district: "",
     city: "",
-    country: "",
+    country: "Brasil",
     uf: "",
     ibge: "",
     gia: "",

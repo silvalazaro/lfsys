@@ -14,8 +14,8 @@
         <div class="flex">
             <sys-select v-model="location.uf" label="Estado" :url="route('ufs.select')" class="w-1/6" />
             <sys-select v-model="location.city" label="Cidade" :url="route('cities.select')"  class="w-2/6 ml-2" />
-            <sys-select v-model="location.district" label="Bairro" :url="route('districts.select')" class="w-2/6 ml-2" />
-            <sys-select v-model="location.country" label="País" :url="route('countries.select')" class="w-1/6 ml-2" />
+            <sys-input v-model="location.district" label="Bairro" class="w-2/6 ml-2" />
+            <sys-input v-model="location.country" label="País" class="w-1/6 ml-2" disabled />
         </div>
       </el-col>
     </el-row>
