@@ -1,6 +1,10 @@
 <template>
   <label class="block w-full">
-    <span class="block text-sm font-medium text-slate-700">{{ label }}</span>
+    <span class="block text-sm font-medium text-slate-700">
+      <el-tooltip :content="tooltip" placement="top-start">
+        {{ label }}
+      </el-tooltip>
+    </span>
     <el-select
       v-model="value"
       filterable
@@ -28,11 +32,19 @@
 import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import axios from "axios";
 
-const props = defineProps<{
+interface Props {
   url: string;
-  label: string;
-  modelValue: any;
-}>();
+  required?: boolean;
+  modelValue: string;
+  label?: string;
+  validators?: Array<any>;
+  disabled?: boolean;
+  tooltip?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  tooltip: "Nenhuma observação",
+});
 
 const emit = defineEmits(["update:modelValue", "change"]);
 const loading = ref(false);

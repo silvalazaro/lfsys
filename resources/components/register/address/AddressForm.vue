@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { location } from "@/store/register/address/location";
-import { Address, createRules } from "@/models/register/Address";
+import { Address, createRules } from "@/models/register/address";
 
 const address = reactive(new Address());
 const form = ref(null);

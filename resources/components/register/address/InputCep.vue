@@ -37,7 +37,7 @@ const tempValue = ref("");
 
 const value = computed({
   get() {
-    return tempValue.value || props.modelValue;
+    return props.modelValue || tempValue.value;
   },
   set: (value: string) => {
     tempValue.value = value;
