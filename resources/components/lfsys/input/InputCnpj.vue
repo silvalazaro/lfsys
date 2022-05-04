@@ -26,9 +26,7 @@ import Schema from "async-validator";
 import { computed, handleError, ref } from "@vue/runtime-core";
 import { ruleCnpj, ruleRequired } from "@/scripts/util/rules";
 import { Company } from "@/models/register/company";
-import consultarCNPJ from "consultar-cnpj";
 import { Address } from "@/models/register/address";
-import { Empresa } from "@/scripts/ws/cnpjWs"
 
 interface Props {
   required?: boolean;
@@ -51,7 +49,7 @@ const input = ref();
 
 const message = ref("");
 
-let company = mode
+let company = new Company()
 
 const tempValue = ref("");
 
@@ -99,9 +97,6 @@ const changeInput = _.debounce(function () {
      // is valid
   try {
     // O Token é opcional
-    const empresa = await consultarCNPJ(company.cnpj);
-    company.corporate_name = empresa.razao_social
-    company.fantasy_name = empresa.
 
   } catch (e) {
   }
@@ -114,17 +109,6 @@ const changeInput = _.debounce(function () {
   }
 }, 300);
 
-function fetchCnpj(cnpj:string, company:Company){
-    const empresa:Empresa = await consultarCNPJ(cnpj);
-    company.corporate_name = empresa.razao_social
-    company.fantasy_name = empresa.estabelecimento.nome_fantasia
-    company.situation = empresa.situacao_cadastral
-    company.opening_date = empresa.data_inicio_atividade
-    // address
-    const address = new Address()
-    address.street_type = empresa.tipo_logradouro;
-    address.street = empresa.logradouro
-}
 
 
 </script>

@@ -5,15 +5,16 @@ import { ruleRequired, ruleCep } from '@/scripts/util/rules'
 
 export class Address extends Model {
     cep: string;
-    place: string;
+    street_type: string;
+    street: string;
     number: string;
     longitude: number
     latitude: number;
     neighborhood_id: number;
     city_id: number;
 
-    constructor() {
-        super()
+    constructor(args?:any) {
+        super(args)
         this.number = "";
     }
 

@@ -31,13 +31,6 @@ class Empresa {
         situacao_cadastral: '',
         data_inicio_atividade: '',
         tipo_logradouro: '',
-        nome_fantasia: "",
-        situacao_cadastral: "",
-        data_situacao_cadastral: "",
-        data_inicio_atividade: "",
-        nome_cidade_exterior: "",
-        tipo_logradouro: "",
-        logradouro: "",
         numero: "",
         complemento: "",
         bairro: "",
@@ -58,7 +51,8 @@ class Empresa {
         atividades_secundarias:[]
     };
 
-    constructor() {
+    constructor(args:any) {
+        _.merge(this, args)
     }
 
     getCompany(): Company {
@@ -66,7 +60,7 @@ class Empresa {
         company.corporate_name = this.razao_social
         company.fantasy_name = this.estabelecimento.nome_fantasia
         company.situation = this.getSituacaoCadastral()
-        company.opening_date = this.estabelecimento.data_inicio_atividade
+        company.foundation_date = new Date(this.estabelecimento.data_inicio_atividade)
         // address
         const address = new Address()
         address.street_type = this.estabelecimento.tipo_logradouro;
@@ -84,10 +78,11 @@ class Empresa {
         return company
     }
 
-    getSituacaoCadastral() {
+    getSituacaoCadastral():RegistrationStatus {
         switch (this.estabelecimento.situacao_cadastral) {
             case 'Ativa': return RegistrationStatus.ACTVE
         }
+        return RegistrationStatus.VOID
     }
 
     getAtividade():AtividadeInterface{
@@ -100,8 +95,7 @@ class Empresa {
 
 }
 
-export class fetchCnpj(cnpj: string): Company{
-    const empresa: Empresa = await consultarCNPJ(cnpj);
-
+export async function fetchCnpj(cnpj: string): Promise<Company>{
+    const empresa = new Empresa(await consultarCNPJ(cnpj));
     return empresa.getCompany()
 }

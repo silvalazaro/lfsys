@@ -44,19 +44,6 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install lfsys dependencies
-RUN npm i vee-validate --save \
-    && npm install element-plus --save \
-    && npm install maska \
-    && npm install vee-validate --save \
-    && npm install pinia \
-    && npm i unplugin-vue-components -D \
-    && npm install -D tailwindcss \
-    && npm i --save-dev @types/node \
-    && npm i autoprefixer
-
-
-# end lfsys
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
