@@ -6,6 +6,7 @@ export default defineConfig({
         Vue(),
     ],
     test: {
-        include: ['tests/Vue/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}']
+        include: ['tests/Vue/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+        setupFiles:['tests/Vue/mocks/server.ts']
     },
 })

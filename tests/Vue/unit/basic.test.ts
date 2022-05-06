@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { assert, expect, test } from 'vitest'
 
 // Edit an assertion and save to see HMR in action
@@ -18,4 +19,10 @@ test('JSON', () => {
 
   expect(output).eq('{"foo":"hello","bar":"world"}')
   assert.deepEqual(JSON.parse(output), input, 'matches original')
+})
+
+test('Request test', async () => {
+    const response = await axios.get('/wsCnpj/cnpj/37045780000104')
+    //expect(response.data.cnpj_raiz).toBe('admne')
+    expect(import.meta).toBe('admiFn')
 })
