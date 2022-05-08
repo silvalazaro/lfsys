@@ -1,7 +1,10 @@
+import _ from 'lodash'
+import moment from 'moment'
+
 import { Address } from "@/models/register/address";
 import { Company, RegistrationStatus } from "@/models/register/company";
 import { Activity } from "@/models/register/company/activity";
-const consultarCNPJ = require('consultar-cnpj')
+import axios from 'axios';
 
 interface InscricaoEstadualInterface {
     inscricao_estadual: string
@@ -23,10 +26,11 @@ interface AtividadeInterface {
 }
 
 
-class Empresa {
+export class Empresa {
     razao_social = "";
     responsavel_federativo = "";
     estabelecimento = {
+        cnpj: '',
         nome_fantasia: '',
         situacao_cadastral: '',
         data_inicio_atividade: '',
@@ -57,14 +61,14 @@ class Empresa {
 
     getCompany(): Company {
         const company = new Company()
+        company.cnpj = this.estabelecimento.cnpj
         company.corporate_name = this.razao_social
         company.fantasy_name = this.estabelecimento.nome_fantasia
         company.situation = this.getSituacaoCadastral()
-        company.foundation_date = new Date(this.estabelecimento.data_inicio_atividade)
+        company.foundation_date = moment(this.estabelecimento.data_inicio_atividade, 'YYYY-MM-DD')
         // address
         const address = new Address()
         address.street_type = this.estabelecimento.tipo_logradouro;
-        address.street = this.estabelecimento.logradouro
 
 
         // fill activities
@@ -96,6 +100,12 @@ class Empresa {
 }
 
 export async function fetchCnpj(cnpj: string): Promise<Company>{
-    const empresa = new Empresa(await consultarCNPJ(cnpj));
-    return empresa.getCompany()
+    try {
+        const response = await axios.get(`https://publica.cnpj.ws/cnpj/${cnpj}`)
+        const empresa = new Empresa(response.data);
+        return empresa.getCompany()
+    } catch (error) {
+
+    }
+    return new Company({cnpj})
 }

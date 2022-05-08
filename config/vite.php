@@ -45,6 +45,7 @@ return [
     */
     'aliases' => [
         '@' => 'resources',
+        '@tests' => 'tests/Vue'
     ],
 
     /*

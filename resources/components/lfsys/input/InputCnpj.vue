@@ -7,7 +7,7 @@
         </el-tooltip>
       </span>
       <el-input
-        v-model="value"
+        v-model="cnpj"
         @input="changeInput"
         @blur="changeInput"
         ref="input"
@@ -23,21 +23,20 @@
 
 <script lang="ts" setup>
 import Schema from "async-validator";
-import { computed, handleError, ref } from "@vue/runtime-core";
+import { handleError, reactive, ref } from "@vue/runtime-core";
 import { ruleCnpj, ruleRequired } from "@/scripts/util/rules";
 import { Company } from "@/models/register/company";
 import { Address } from "@/models/register/address";
+import { fetchCnpj } from "@/scripts/ws/cnpjWs";
 
 interface Props {
   required?: boolean;
-  modelValue: string | Company;
+  modelValue: any;
   label?: string;
   rules?: Array<any>;
   disabled?: boolean;
   tooltip?: string;
 }
-
-
 
 const props = withDefaults(defineProps<Props>(), {
   tooltip: "Nenhuma observação",
@@ -49,29 +48,18 @@ const input = ref();
 
 const message = ref("");
 
-let company = new Company()
+let cnpj = ref("");
 
-const tempValue = ref("");
-
-const value = computed<Company | string>({
-  get():Company | string {
-    return  props.modelValue instanceof Company ? company : company.cnpj
-  },
-  set: (value: string | Company) => {
-    if(value instanceof Company){
-        company = value
-    }else{
-        company.cnpj = value
-    }
-  },
-});
+if (props.modelValue instanceof Company && props.modelValue.cnpj) {
+  cnpj.value = props.modelValue.cnpj;
+}
 
 let defaultRules = [];
 
 if (props.rules) {
-  defaultRules = props.rules
-}else{
- defaultRules.push(ruleCnpj())
+  defaultRules = props.rules;
+} else {
+  defaultRules.push(ruleCnpj());
 }
 
 if (props.required) {
@@ -84,31 +72,27 @@ const validator = new Schema({
 
 // validate after change
 const changeInput = _.debounce(function () {
-   // pego cnpj
-  company.cnpj =  input.value.input.dataset.maskRawValue;
-  if (validator) {
-    const newValue = input.value.input.dataset.maskRawValue;
-    validator.validate({ input: newValue }, (errors: any, fields: any) => {
-      if (errors) {
-        message.value = errors[0].message;
-        return handleError(errors, fields, errors);
-      }
+  // cnpj withou mask
+  const cnpjUnmasked = input.value.input.dataset.maskRawValue;
+  validator.validate({ input: cnpjUnmasked }, (errors: any, fields: any) => {
+    if (errors) {
+      message.value = errors[0].message;
+      return handleError(errors, fields, errors);
+    }
 
-     // is valid
-  try {
-    // O Token é opcional
-
-  } catch (e) {
-  }
-
-      emit("update:modelValue", value);
-      message.value = "";
-    });
-  } else {
-    emit("update:modelValue", value);
-  }
+    // validation ok
+    message.value = "";
+    changeModelValue(cnpjUnmasked);
+  });
 }, 300);
 
-
-
+// change props.modelValue, call only after validation if exists
+function changeModelValue(cnpj: string) {
+  if (props.modelValue instanceof Company) {
+    const company = fetchCnpj(cnpj);
+    emit("update:modelValue", company);
+  } else {
+    emit("update:modelValue", cnpj);
+  }
+}
 </script>

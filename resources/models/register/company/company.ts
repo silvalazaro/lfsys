@@ -1,16 +1,17 @@
 import { Model } from "@/models/Model";
+import { Moment } from "moment";
 import { Activity } from "./activity";
 import { RegistrationStatus } from "./registrationStatus";
 
 export class Company extends Model {
-    corporate_name: string;
-    fantasy_name: string;
-    cpf: string;
-    cnpj: string;
-    crt: string;
-    issqn: Number;
+    corporate_name: string
+    fantasy_name: string
+    cpf: string
+    cnpj: string
+    crt: string
+    issqn: Number
     situation: RegistrationStatus;
-    foundation_date: Date;
+    foundation_date: Moment;
     wholesale_retail: boolean;
     enabled: boolean;
     created_at: Date;

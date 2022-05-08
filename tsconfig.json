@@ -21,10 +21,15 @@
         "paths": {
             "@/*": [
                 "resources/*"
+            ],
+            "@tests/*": [
+                "tests/Vue/*"
             ]
         }
     },
     "include": [
-        "resources/**/*"
+        "resources/**/*",
+        "tests/Vue/**/*",
+        "./*"
     ]
 }
