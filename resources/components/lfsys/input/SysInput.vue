@@ -2,12 +2,9 @@
   <div>
     <label class="block">
       <span class="block text-sm font-medium text-slate-700">
-        <el-tooltip
-          :content="tooltip"
-          placement="top-start"
-        >
-         {{ label }}
-        </el-tooltip>
+        <sys-tooltip-help :message="tooltip" :observation="observation">
+          {{ label }}
+        </sys-tooltip-help>
       </span>
       <el-input
         v-model="value"
@@ -32,18 +29,16 @@ interface Props {
   label?: string;
   validators?: Array<any>;
   disabled?: boolean;
-  tooltip?:string
+  observation?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-    tooltip: 'Nenhuma observação'
-})
+const props = withDefaults(defineProps<Props>(),{});
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
-const input = ref();
-
 const message = ref("");
+
+const tooltip = `Preencha o campo ${props.label}`
 
 const tempValue = ref("");
 

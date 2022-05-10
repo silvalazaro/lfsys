@@ -1,23 +1,35 @@
 <template>
-  <div>
-    <label class="block">
-      <span class="block text-sm font-medium text-slate-700">
-        <el-tooltip :content="tooltip" placement="top-start">
-          <div>CNPJ <span class="text-red-500" v-if="required">*</span></div>
-        </el-tooltip>
-      </span>
-      <el-input
-        v-model="cnpj"
-        @input="changeInput"
-        @blur="changeInput"
-        ref="input"
-        :disabled="disabled"
-        v-maska="'##.###.###/####-##'"
-      />
-      <p class="mt-2 text-rose-500 text-sm">
-        {{ message }}
-      </p>
-    </label>
+  <div class="block">
+    <span class="block text-sm font-medium text-slate-700">
+      <el-tooltip placement="top" v-model:visible="showHelp">
+        <template #content>
+          <div class="grid place-items-center">
+            <div>Informe o CNPJ</div>
+            <div>
+              <el-button type="text" @click="showHelp = false"
+                ><ep-circle-check
+              /></el-button>
+            </div>
+          </div>
+        </template>
+        <div class="align-bottom">
+          CNPJ
+          <span class="text-red-500 self-end" v-if="required">*</span>&nbsp;
+          <el-icon class="self-end" @click="showHelp = true"><ep-question-filled /></el-icon>
+        </div>
+      </el-tooltip>
+    </span>
+    <el-input
+      v-model="cnpj"
+      @input="changeInput"
+      @blur="changeInput"
+      ref="input"
+      :disabled="disabled"
+      v-maska="'##.###.###/####-##'"
+    />
+    <p class="mt-2 text-rose-500 text-sm">
+      {{ message }}
+    </p>
   </div>
 </template>
 
@@ -28,21 +40,24 @@ import { ruleCnpj, ruleRequired } from "@/scripts/util/rules";
 import { Company } from "@/models/register/company";
 import { Address } from "@/models/register/address";
 import { fetchCnpj } from "@/scripts/ws/cnpjWs";
+import { watch } from "vue";
 
 interface Props {
   required?: boolean;
   modelValue: any;
+  address?:Address
   label?: string;
   rules?: Array<any>;
   disabled?: boolean;
-  tooltip?: string;
+  help?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   tooltip: "Nenhuma observação",
+  help: false,
 });
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(["update:modelValue", "change", "update:address"]);
 
 const input = ref();
 
@@ -87,12 +102,20 @@ const changeInput = _.debounce(function () {
 }, 300);
 
 // change props.modelValue, call only after validation if exists
-function changeModelValue(cnpj: string) {
+async function changeModelValue(cnpj: string) {
   if (props.modelValue instanceof Company) {
-    const company = fetchCnpj(cnpj);
+    const company = await fetchCnpj(cnpj);
     emit("update:modelValue", company);
+    emit("update:address", company.address);
   } else {
     emit("update:modelValue", cnpj);
   }
 }
+
+const showHelp = ref(props.help || false);
+
+watch(showHelp, (value) => {
+    showHelp.value = value
+});
+
 </script>

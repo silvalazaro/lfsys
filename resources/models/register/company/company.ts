@@ -1,5 +1,6 @@
 import { Model } from "@/models/Model";
 import { Moment } from "moment";
+import { Address } from "../address";
 import { Activity } from "./activity";
 import { RegistrationStatus } from "./registrationStatus";
 
@@ -9,18 +10,35 @@ export class Company extends Model {
     cpf: string
     cnpj: string
     crt: string
+    state_registration: string
+    city_registration: string
     issqn: Number
     situation: RegistrationStatus;
     foundation_date: Moment;
-    wholesale_retail: boolean;
-    enabled: boolean;
+    wholesale_retail: boolean
+    enabled: boolean
     created_at: Date;
     updated_at: Date;
-    secondary_activities:Array<Activity>
+    secondary_activities: Array<Activity>
+    address: Address
 
-    constructor(args?:any){
+    constructor(args?: any) {
         super(args)
-        this.secondary_activities = this.secondary_activities || new Array<Activity>()
     }
 
+    init() {
+        return {
+            corporate_name: '',
+            fantasy_name: '',
+            cpf: '',
+            cnpj: '',
+            crt: '',
+            issqn: '',
+            situation: '',
+            state_registration: '',
+            city_registration: '',
+            address: new Address(),
+            ...super.init()
+        }
+    }
 }

@@ -18,6 +18,15 @@ export class Address extends Model {
         this.number = "";
     }
 
+    init() {
+        return {
+            ...super.init(),
+            cep: '',
+            street_type: '',
+            numer: '',
+        }
+    }
+
 }
 
 export function createRules() {
