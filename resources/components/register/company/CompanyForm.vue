@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="flex">
+      <select-state v-model="model.company.state" />
+    <!-- <div class="flex">
       <input-cnpj v-model="model.company" class="w-1/4 pr-2" required />
       <sys-input
         v-model="model.company.state_registration"
@@ -34,14 +35,14 @@
     </div>
 
     <div class="w-full">
-      <address-form />
+      <address-form v-model="model.company.address" />
     </div>
     <div class="flex">
       <sys-phone-input label="Telefone" class="pr-2" />
       <sys-phone-input label="Celular" class="pr-2" />
       <sys-input label="Site" class="w-1/4 pr-2" />
       <sys-input label="E-mail" class="w-1/4 pr-2" />
-    </div>
+    </div> -->
   </div>
 </template>
 

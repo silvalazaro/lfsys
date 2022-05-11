@@ -13,9 +13,16 @@ test('response cnpj.ws to Company', async () => {
     expect(company.cnpj).toBe(empresa.estabelecimento.cnpj)
     expect(company.corporate_name).toBe(empresa.razao_social)
     expect(company.fantasy_name).toBe(empresa.estabelecimento.nome_fantasia)
-    expect(company.cpf).toBe(undefined)
+    expect(company.cpf).toBe(null)
     expect(company.foundation_date.format('YYYY-MM-DD')).toBe(empresa.estabelecimento.data_inicio_atividade)
 
+    // address
+    expect(company.address?.cep).toBe(empresa.estabelecimento.cep)
+    expect(company.address?.street).toBe(empresa.estabelecimento.logradouro)
+    expect(company.address?.street_type).toBe(empresa.estabelecimento.tipo_logradouro)
+    expect(company.address?.ad_neighborhood).toBe(empresa.estabelecimento.bairro)
+    expect(company.address?.city.name).toBe(empresa.estabelecimento.cidade.nome)
+    expect(company.address?.city.state.initials).toBe(empresa.estabelecimento.estado.sigla)
 })
 
 test('request cnpj.ws', async () => {

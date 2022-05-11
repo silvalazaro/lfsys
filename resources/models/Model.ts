@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 export class Model {
-    id: String
+    id: number
 
     constructor(args?: any) {
         _.assign(this, this.init())

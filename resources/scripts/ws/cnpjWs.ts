@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { add } from 'lodash'
 import moment from 'moment'
 
 import { Address } from "@/models/register/address";
@@ -42,7 +42,12 @@ export class Empresa {
         // address
         const address = new Address()
         address.street_type = this.estabelecimento.tipo_logradouro;
-
+        address.cep = this.estabelecimento.cep
+        address.street = this.estabelecimento.logradouro
+        address.ad_neighborhood = this.estabelecimento.bairro
+        address.city.name =  this.estabelecimento.cidade.nome
+        address.city.state.initials = this.estabelecimento.estado.sigla
+        company.address = address
 
         // fill activities
         // this.getAtividadesSecundarias().forEach(e => {
