@@ -1,9 +1,9 @@
 <template>
   <label class="block w-full">
     <span class="block text-sm font-medium text-slate-700">
-      <el-tooltip :content="tooltip" placement="top-start">
+      <sys-tooltip-help :message="error" :observation="observation">
         {{ label }}
-      </el-tooltip>
+      </sys-tooltip-help>
     </span>
     <el-select
       v-model="value"
@@ -13,13 +13,14 @@
       value-key="label"
       :loading="loading"
       :remote-method="remoteMethod"
+      :multiple="!!props.array"
       remote
       class="w-full"
     >
       <el-option
         v-for="item in data.options"
         :key="item.id"
-        :value="item.label"
+        :value="item.name"
       />
     </el-select>
     <p class="mt-2 text-rose-500 text-sm">
@@ -32,36 +33,49 @@
 import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import axios from "axios";
 
+import { SysSelectInterface } from "./index";
+
 interface Props {
   url: string;
   required?: boolean;
-  modelValue: string;
+  modelValue?: SysSelectInterface;
+  array?: Array<SysSelectInterface>;
   label?: string;
   validators?: Array<any>;
   disabled?: boolean;
-  tooltip?: string;
+  message?: string;
+  observation?:string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  tooltip: "Nenhuma observação",
+  message: "",
+  observation: "",
 });
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(["update:modelValue", "change", "update:array"]);
+
 const loading = ref(false);
 const message = ref("");
+
 const value = computed({
-  get() {
-    const val: any = _.find(
-      data.options,
-      (e: any) => e.id === props.modelValue
-    );
-    return val ? val.label : props.modelValue;
+  get(): any {
+    if (props.modelValue) return props.modelValue.name;
+    if (props.array) return props.array.map((e) => e.name);
+    return "";
   },
-  set: (value: string | number) => {
-    emit(
-      "update:modelValue",
-      _.find(data.options, (e: any) => e.label === value).id
-    );
+  set: (value: any) => {
+    if (props.modelValue) {
+      emit(
+        "update:modelValue",
+        _.find(data.options, (e: any) => e.name === value)
+      );
+    }
+    if (props.array) {
+      emit(
+        "update:array",
+        _.filter(data.options, (e: any) => !!_.find(value, (t) => t === e.name))
+      );
+    }
   },
 });
 
@@ -91,7 +105,6 @@ onMounted(() => {
 });
 
 const remoteMethod = (query: string) => {
-  console.log(params);
   if (query) {
     params.label = query;
     search();

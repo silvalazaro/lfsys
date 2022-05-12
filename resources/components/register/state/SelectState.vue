@@ -1,29 +1,45 @@
 <template>
   <sys-select
     v-model="value"
+    v-model:array="valueArray"
     label="Estado"
     :url="route('ufs.select')"
     class="w-1/6"
+    message="Estado"
   />
 </template>
 
 <script lang="ts" setup>
+import { SysSelectInterface } from "@/components/lfsys/select";
 import { State } from "@/models/register/state";
-import { computed, ref } from "vue";
+import { computed, reactive } from "@vue/runtime-core";
 
-interface PropsInterface{
-    modelValue: State | Array<State>
+interface PropsInterface<T>{
+  modelValue?: T
+  array?: Array<T>
 }
 
-const props = defineProps<PropsInterface>()
+const emit = defineEmits(["update:modelValue", "update:array"]);
+
+const props = defineProps<PropsInterface<State>>()
 
 const value = computed({
-    get():number | Array<number> {
-        return props.modelValue instanceof State ? props.modelValue.id : props.modelValue.map(e => e.id)
+    get():SysSelectInterface | undefined{
+        return props.modelValue
     },
-    set(){
-        pr
+    set(value:SysSelectInterface | undefined){
+        emit("update:modelValue", new State(value))
     }
 })
+
+const valueArray = computed({
+     get():Array<SysSelectInterface> | undefined{
+        return props.array
+    },
+    set(value:Array<SysSelectInterface> | undefined){
+        emit("update:array", value)
+    }
+})
+
 
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <select-state v-model="model.company.state" />
+      <select-state v-model="state.value" />
     <!-- <div class="flex">
       <input-cnpj v-model="model.company" class="w-1/4 pr-2" required />
       <sys-input
@@ -48,11 +48,16 @@
 
 <script lang="ts" setup>
 import { Company } from "@/models/register/company";
+import { State } from "@/models/register/state";
 import { reactive, ref } from "@vue/reactivity";
 
 const model = reactive({
   company: new Company(),
 });
+
+const state = reactive({
+    value: new State()
+})
 
 const help = ref(true);
 </script>
